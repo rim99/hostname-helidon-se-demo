@@ -1,0 +1,18 @@
+version: '3'
+services:
+  demo-graal:
+    build: 
+      dockerfile: Dockerfile.graal
+      context: .
+    volumes: 
+      - mvn-repo:/usr/share/maven/ref/repository  
+
+  demo-helidon:
+    build: 
+      dockerfile: Dockerfile.helidon
+      context: .
+    volumes: 
+      - mvn-repo:/usr/share/maven/ref/repository           
+
+volumes:
+  mvn-repo:

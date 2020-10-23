@@ -1,0 +1,13 @@
+
+FROM maven:3.6.3-jdk-11-slim as package
+WORKDIR /app
+ADD pom-graal.xml ./pom.xml
+ADD src src
+RUN mvn package -Dmaven.test.skip 
+
+FROM oracle/graalvm-ce:20.2.0-java11 as compile
+WORKDIR /app
+RUN gu install native-image 
+COPY --from=package /app/target/hostname-demo-1.0-SNAPSHOT.jar ./hostname-demo.jar
+RUN native-image -jar hostname-demo.jar
+ENTRYPOINT ["./hostname-demo"]
